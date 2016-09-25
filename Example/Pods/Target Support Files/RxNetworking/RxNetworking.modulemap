@@ -1,0 +1,6 @@
+framework module RxNetworking {
+  umbrella header "RxNetworking-umbrella.h"
+
+  export *
+  module * { export * }
+}
