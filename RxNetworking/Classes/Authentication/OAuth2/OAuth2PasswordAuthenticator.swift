@@ -9,28 +9,28 @@
 import RxSwift
 import Alamofire
 
-protocol OAuth2PasswordAuthenticatorDataSource: class {
+public protocol OAuth2PasswordAuthenticatorDataSource {
     func clientId() -> String
     func clientSecret() -> String
     func tokenEndpoint() -> Endpoint
     func tokenEndpoint(withRefreshToken refreshToken: String) -> Endpoint
 }
 
-final class OAuth2PasswordAuthenticator {
-    weak var dataSource: OAuth2PasswordAuthenticatorDataSource?
+public final class OAuth2PasswordAuthenticator {
+    public var dataSource: OAuth2PasswordAuthenticatorDataSource?
     
     private let networkClient: NetworkClientProtocol
     private let authenticator: Authenticator?
     private var credentialStore: CredentialStore
     private let disposeBag = DisposeBag()
     
-    init(withNetworkClient networkClient: NetworkClientProtocol, authenticator: Authenticator? = nil, credentialStore: CredentialStore = OAuth2DefaultsCredentialStore()) {
+    public init(withNetworkClient networkClient: NetworkClientProtocol, authenticator: Authenticator? = nil, credentialStore: CredentialStore = OAuth2DefaultsCredentialStore()) {
         self.networkClient = networkClient
         self.credentialStore = credentialStore
         self.authenticator = authenticator
     }
     
-    func authorize() -> Observable<Bool> {
+    public func authorize() -> Observable<Bool> {
         return networkClient.request(withEndpoint: dataSource!.tokenEndpoint(), authenticator: authenticator)
             .map(toCredential)
             .doOnNext(storeCredential)
@@ -38,11 +38,11 @@ final class OAuth2PasswordAuthenticator {
             .catchErrorJustReturn(false)
     }
     
-    func unauthorize() throws {
+    public func unauthorize() throws {
         try credentialStore.deleteCredential(withIdentifier: OAuth2Credential.identifierWithClientId(dataSource!.clientId(), clientSecret: dataSource!.clientSecret()))
     }
     
-    func isAuthorized() -> Bool {
+    public func isAuthorized() -> Bool {
         let credential = getCredential()
         return credential != nil
     }
@@ -51,7 +51,7 @@ final class OAuth2PasswordAuthenticator {
 // MARK: Authenticator protocol
 
 extension OAuth2PasswordAuthenticator: Authenticator {
-    func authHeaderField() -> Observable<String> {
+    public func authHeaderField() -> Observable<String> {
         var credentialSignal: Observable<OAuth2Credential>
         
         guard let _credential = getCredential() else {

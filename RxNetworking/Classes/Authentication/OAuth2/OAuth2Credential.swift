@@ -20,7 +20,7 @@ extension K {
     }
 }
 
-final class OAuth2Credential: NSObject, NSCoding, Credential {
+public final class OAuth2Credential: NSObject, NSCoding, Credential {
     let accessToken: String
     let tokenType: String
     var refreshToken: String?
@@ -36,7 +36,7 @@ final class OAuth2Credential: NSObject, NSCoding, Credential {
         }
     }
     
-    init(withAccessToken accessToken: String, tokenType: String, refreshToken: String? = nil, expiration: NSDate = NSDate.distantFuture()) {
+    public init(withAccessToken accessToken: String, tokenType: String, refreshToken: String? = nil, expiration: NSDate = NSDate.distantFuture()) {
         self.accessToken = accessToken
         self.tokenType = tokenType
         self.refreshToken = refreshToken
@@ -45,7 +45,7 @@ final class OAuth2Credential: NSObject, NSCoding, Credential {
     
     // MARK: NSCoding
     
-    required convenience init?(coder decoder: NSCoder) {
+    public required convenience init?(coder decoder: NSCoder) {
         guard
             let accessToken = decoder.decodeObjectForKey(K.OAuth2Credential.kAccessTokenKey) as? String,
             let tokenType = decoder.decodeObjectForKey(K.OAuth2Credential.kTokenTypeKey) as? String
@@ -57,7 +57,7 @@ final class OAuth2Credential: NSObject, NSCoding, Credential {
         self.init(withAccessToken: accessToken, tokenType: tokenType, refreshToken: refreshToken, expiration: expiration ?? NSDate.distantFuture())
     }
     
-    func encodeWithCoder(coder: NSCoder) {
+    public func encodeWithCoder(coder: NSCoder) {
         coder.encodeObject(accessToken, forKey: K.OAuth2Credential.kAccessTokenKey)
         coder.encodeObject(tokenType, forKey: K.OAuth2Credential.kTokenTypeKey)
         coder.encodeObject(refreshToken, forKey: K.OAuth2Credential.kRefreshTokenKey)
@@ -69,7 +69,7 @@ final class OAuth2Credential: NSObject, NSCoding, Credential {
 
 extension OAuth2Credential: JSONParsableType {
     
-    static func fromJSON(json: AnyObject?) throws -> OAuth2Credential {
+    public static func fromJSON(json: AnyObject?) throws -> OAuth2Credential {
         guard let _json = json as? [String: AnyObject] else { throw JSONParsingError.InvalidJSON }
         
         guard let accessToken = _json[K.OAuth2Credential.kAccessTokenKey] as? String else { throw JSONParsingError.FieldNotFound }
@@ -94,7 +94,7 @@ extension OAuth2Credential: JSONParsableType {
 
 extension OAuth2Credential {
     
-    class func identifierWithClientId(clientId: String, clientSecret: String) -> String {
+    public class func identifierWithClientId(clientId: String, clientSecret: String) -> String {
         return "\(clientId):\(clientSecret)"
     }
 }

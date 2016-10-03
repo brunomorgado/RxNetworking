@@ -8,14 +8,14 @@
 
 import Foundation
 
-struct OAuth2DefaultsCredentialStore: CredentialStore {
+public struct OAuth2DefaultsCredentialStore: CredentialStore {
     let userDefaults: NSUserDefaults
     
-    init(withUserDefaults userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()) {
+    public init(withUserDefaults userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()) {
         self.userDefaults = userDefaults
     }
     
-    func storeCredential(credential: Credential, withIdentifier identifier: String) throws {
+    public func storeCredential(credential: Credential, withIdentifier identifier: String) throws {
         guard let _credential = credential as? OAuth2Credential else {
             throw CredentialStoreError.Unknown
         }
@@ -23,7 +23,7 @@ struct OAuth2DefaultsCredentialStore: CredentialStore {
         userDefaults.setObject(data, forKey: identifier)
     }
     
-    func retrieveCredential(withIdentifier identifier: String) throws -> Credential {
+    public func retrieveCredential(withIdentifier identifier: String) throws -> Credential {
         let data = userDefaults.dataForKey(identifier)
         
         guard let _data = data else {
@@ -36,7 +36,7 @@ struct OAuth2DefaultsCredentialStore: CredentialStore {
         return credential
     }
     
-    func deleteCredential(withIdentifier identifier: String) throws {
+    public func deleteCredential(withIdentifier identifier: String) throws {
         userDefaults.removeObjectForKey(identifier)
     }
 }

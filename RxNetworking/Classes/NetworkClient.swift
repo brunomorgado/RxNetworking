@@ -21,22 +21,22 @@ public protocol NetworkClientProtocol {
     func request(withEndpoint endpoint: Endpoint, authenticator: Authenticator?) -> Observable<AnyObject>
 }
 
-final class NetworkClient: NetworkClientProtocol {
+public final class NetworkClient: NetworkClientProtocol {
     private let networkManager: Manager
     
-    init() {
+    public init() {
         self.networkManager = Manager()
     }
     
-    init(withSessionConfiguration sessionConfiguration: NSURLSessionConfiguration) {
+    public init(withSessionConfiguration sessionConfiguration: NSURLSessionConfiguration) {
         self.networkManager = Manager(configuration: sessionConfiguration)
     }
     
-    func request(withEndpoint endpoint: Endpoint) -> Observable<AnyObject> {
+    public func request(withEndpoint endpoint: Endpoint) -> Observable<AnyObject> {
         return request(withEndpoint: endpoint, authenticator: nil)
     }
     
-    func request(withEndpoint endpoint: Endpoint, authenticator: Authenticator?) -> Observable<AnyObject> {
+    public func request(withEndpoint endpoint: Endpoint, authenticator: Authenticator?) -> Observable<AnyObject> {
         if let sampleData = endpoint.sampleData {
             return Observable.just(sampleData)
         }

@@ -9,11 +9,11 @@
 import RxSwift
 import Alamofire
 
-final class BasicAuthenticator {
+public final class BasicAuthenticator {
     let username: String
     let password: String
     
-    init(withUsername username: String, password: String) {
+    public init(withUsername username: String, password: String) {
         self.username = username
         self.password = password
     }
@@ -22,7 +22,7 @@ final class BasicAuthenticator {
 // MARK: Authenticator
 
 extension BasicAuthenticator: Authenticator {
-    func authHeaderField() -> Observable<String> {
+    public func authHeaderField() -> Observable<String> {
         return Observable.just(basicAuthHeaderField())
     }
 }

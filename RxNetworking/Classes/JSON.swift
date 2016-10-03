@@ -8,17 +8,17 @@
 
 import Foundation
 
-enum JSONParsingError: ErrorType {
+public enum JSONParsingError: ErrorType {
     case InvalidJSON
     case FieldNotFound
     case Unknown
 }
 
-enum JSONWritingError: ErrorType {
+public enum JSONWritingError: ErrorType {
     case Unknown
 }
 
-protocol JSONParsableType {
+public protocol JSONParsableType {
     static func fromJSON(_: AnyObject?) throws -> Self
 }
 

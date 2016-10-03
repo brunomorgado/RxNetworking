@@ -6,4 +6,4 @@
 //  Copyright © 2016 KO Computer. All rights reserved.
 //
 
-protocol Credential {}
+public protocol Credential {}

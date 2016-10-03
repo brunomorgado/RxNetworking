@@ -6,7 +6,7 @@
 //  Copyright © 2016 KO Computer. All rights reserved.
 //
 
-struct K {
+public struct K {
     struct General {
     }
 }

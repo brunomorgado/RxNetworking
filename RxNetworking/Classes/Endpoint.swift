@@ -21,7 +21,7 @@ public protocol Endpoint {
     var sampleData: AnyObject? { get }
 }
 
-extension Endpoint {
+public extension Endpoint {
     func snapshot() -> EndpointSnapshot {
         return EndpointSnapshot(
             baseUrl: self.baseUrl,
@@ -35,19 +35,19 @@ extension Endpoint {
     }
 }
 
-struct EndpointSnapshot: Endpoint {
-    var baseUrl: String
-    var path: String
-    var parameters: [Alamofire.ParameterEncoding: [String: AnyObject]]?
-    var method: Alamofire.Method
-    var headers: [String: String]?
-    var validation: Request.Validation?
-    var errorMapping: ErrorMapping?
-    var sampleData: AnyObject?
+public struct EndpointSnapshot: Endpoint {
+    public var baseUrl: String
+    public var path: String
+    public var parameters: [Alamofire.ParameterEncoding: [String: AnyObject]]?
+    public var method: Alamofire.Method
+    public var headers: [String: String]?
+    public var validation: Request.Validation?
+    public var errorMapping: ErrorMapping?
+    public var sampleData: AnyObject?
 }
 
 extension EndpointSnapshot {
-    func fullUrl() -> String {
+    public func fullUrl() -> String {
         var formattedBaseUrl = baseUrl
         var formatterPath = path
         
@@ -64,7 +64,7 @@ extension EndpointSnapshot {
         return safeFullUrl
     }
     
-    func getBodyParameters() -> [String: AnyObject]? {
+    public func getBodyParameters() -> [String: AnyObject]? {
         return self.parameters?.reduce([String: String](), combine: { (curried, element) -> [String: AnyObject]? in
             var curried = curried
             if !parametersEncodedInURL(withEncoding: element.0, method: self.method) {
@@ -74,7 +74,7 @@ extension EndpointSnapshot {
         })
     }
     
-    func getURLEncodedInURLParameters() -> [String: AnyObject]? {
+    public func getURLEncodedInURLParameters() -> [String: AnyObject]? {
         return self.parameters?.reduce(nil, combine: { (curried, element) -> [String: AnyObject]? in
             var curried = curried
             if parametersEncodedInURL(withEncoding: element.0, method: self.method) {
@@ -84,7 +84,7 @@ extension EndpointSnapshot {
         })
     }
     
-    func getURLEncodedInBodyParameters() -> [String: AnyObject]? {
+    public func getURLEncodedInBodyParameters() -> [String: AnyObject]? {
         return self.parameters?.reduce(nil, combine: { (curried, element) -> [String: AnyObject]? in
             guard element.0 == .URL else {
                 return curried
@@ -97,7 +97,7 @@ extension EndpointSnapshot {
         })
     }
     
-    func getJSONEncodedInBodyParameters() -> [String: AnyObject]? {
+    public func getJSONEncodedInBodyParameters() -> [String: AnyObject]? {
         return self.parameters?.reduce(nil, combine: { (curried, element) -> [String: AnyObject]? in
             guard element.0 == .JSON else {
                 return curried
@@ -110,7 +110,7 @@ extension EndpointSnapshot {
         })
     }
     
-    func parametersEncodedInURL(withEncoding encoding: Alamofire.ParameterEncoding, method: Alamofire.Method) -> Bool {
+    public func parametersEncodedInURL(withEncoding encoding: Alamofire.ParameterEncoding, method: Alamofire.Method) -> Bool {
         switch encoding {
         case .URLEncodedInURL:
             return true
