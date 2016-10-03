@@ -1,6 +1,6 @@
 //
 //  OAuth2Credential.swift
-//  Temp
+//  RxNetworking
 //
 //  Created by Bruno Morgado on 13/08/16.
 //  Copyright © 2016 KO Computer. All rights reserved.
