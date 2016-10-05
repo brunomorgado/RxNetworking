@@ -46,7 +46,7 @@ public struct EndpointSnapshot: Endpoint {
     public var sampleData: AnyObject?
 }
 
-extension EndpointSnapshot {
+public extension EndpointSnapshot {
     public func fullUrl() -> String {
         var formattedBaseUrl = baseUrl
         var formatterPath = path
