@@ -48,34 +48,113 @@ extension EndpointTestsAPI {
         switch self {
             
         case .Endpoint1:
-            return [.JSON: [
-                "grant_type": "password",
-                "client_id": "client_id",
-                "client_secret":  "client_secret",
-                "username": "username",
-                "password": "password",
-                "redirect_uri": "https://park.we-vw.de/v1/user"
+            return [.URL: [
+                "Key1": "Value1",
+                "Key2": "Value2",
+                "Key3":  "Value3",
+                "Key4": "Value4",
+                "Key5": "Value5",
+                "Key6": "Value6"
+                ],
+                .URLEncodedInURL: [
+                        "Key7": "Value7",
+                        "Key8": "Value8",
+                        "Key9":  "Value9",
+                        "Key10": "Value10",
+                        "Key11": "Value11"
+                ],
+                .JSON: [
+                    "Key12": "Value12",
+                    "Key13": "Value13",
+                    "Key14":  "Value14",
+                    "Key15": "Value16",
+                    "Key16": "Value17"
                 ]]
             
         case .Endpoint2:
-            return [.JSON: [
-                "grant_type": "refresh_token",
-                "client_id": "client_id",
-                "client_secret":  "client_secret",
-                "refresh_token": "refresh_token",
-                "redirect_uri": "https://park.we-vw.de/v1/user"
+            return  [.URL: [
+                "Key1": "Value1",
+                "Key2": "Value2",
+                "Key3":  "Value3",
+                "Key4": "Value4",
+                "Key5": "Value5",
+                "Key6": "Value6"
+                ],
+                     .URLEncodedInURL: [
+                        "Key7": "Value7",
+                        "Key8": "Value8",
+                        "Key9":  "Value9",
+                        "Key10": "Value10",
+                        "Key11": "Value11"
+                ],
+                     .JSON: [
+                        "Key12": "Value12",
+                        "Key13": "Value13",
+                        "Key14":  "Value14",
+                        "Key15": "Value16",
+                        "Key16": "Value17"
                 ]]
-        default: return nil
+            
+        case .Endpoint3:
+            return  [.URL: [
+                "Key1": "Value1",
+                "Key2": "Value2",
+                "Key3":  "Value3",
+                "Key4": "Value4",
+                "Key5": "Value5",
+                "Key6": "Value6"
+                ],
+                     .URLEncodedInURL: [
+                        "Key7": "Value7",
+                        "Key8": "Value8",
+                        "Key9":  "Value9",
+                        "Key10": "Value10",
+                        "Key11": "Value11"
+                ],
+                     .JSON: [
+                        "Key12": "Value12",
+                        "Key13": "Value13",
+                        "Key14":  "Value14",
+                        "Key15": "Value16",
+                        "Key16": "Value17"
+                ]]
+            
+        case .Endpoint4:
+            return  [.URL: [
+                "Key1": "Value1",
+                "Key2": "Value2",
+                "Key3":  "Value3",
+                "Key4": "Value4",
+                "Key5": "Value5",
+                "Key6": "Value6"
+                ],
+                     .URLEncodedInURL: [
+                        "Key7": "Value7",
+                        "Key8": "Value8",
+                        "Key9":  "Value9",
+                        "Key10": "Value10",
+                        "Key11": "Value11"
+                ],
+                     .JSON: [
+                        "Key12": "Value12",
+                        "Key13": "Value13",
+                        "Key14":  "Value14",
+                        "Key15": "Value16",
+                        "Key16": "Value17"
+                ]]
         }
     }
     
     public var method: Alamofire.Method {
         switch self {
         case .Endpoint1:
-            return .POST
-        case .Endpoint2:
             return .GET
-        default: return .GET
+        case .Endpoint2:
+            return .POST
+        case .Endpoint3:
+            return .PUT
+        case .Endpoint4:
+            return .DELETE
         }
     }
     

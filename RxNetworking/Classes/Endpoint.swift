@@ -65,9 +65,9 @@ public extension EndpointSnapshot {
     }
     
     public func getBodyParameters() -> [String: AnyObject]? {
-        return self.parameters?.reduce([String: String](), combine: { (curried, element) -> [String: AnyObject]? in
+        return self.parameters?.reduce(nil, combine: { (curried, element) -> [String: AnyObject]? in
             var curried = curried
-            if !parametersEncodedInURL(withEncoding: element.0, method: self.method) {
+            if !EndpointSnapshot.parametersEncodedInURL(withEncoding: element.0, method: self.method) {
                 curried += element.1
             }
             return curried
@@ -77,7 +77,7 @@ public extension EndpointSnapshot {
     public func getURLEncodedInURLParameters() -> [String: AnyObject]? {
         return self.parameters?.reduce(nil, combine: { (curried, element) -> [String: AnyObject]? in
             var curried = curried
-            if parametersEncodedInURL(withEncoding: element.0, method: self.method) {
+            if EndpointSnapshot.parametersEncodedInURL(withEncoding: element.0, method: self.method) {
                 curried += element.1
             }
             return curried
@@ -90,7 +90,7 @@ public extension EndpointSnapshot {
                 return curried
             }
             var curried = curried
-            if !parametersEncodedInURL(withEncoding: element.0, method: self.method) {
+            if !EndpointSnapshot.parametersEncodedInURL(withEncoding: element.0, method: self.method) {
                 curried += element.1
             }
             return curried
@@ -103,14 +103,14 @@ public extension EndpointSnapshot {
                 return curried
             }
             var curried = curried
-            if !parametersEncodedInURL(withEncoding: element.0, method: self.method) {
+            if !EndpointSnapshot.parametersEncodedInURL(withEncoding: element.0, method: self.method) {
                 curried += element.1
             }
             return curried
         })
     }
     
-    public func parametersEncodedInURL(withEncoding encoding: Alamofire.ParameterEncoding, method: Alamofire.Method) -> Bool {
+    public static func parametersEncodedInURL(withEncoding encoding: Alamofire.ParameterEncoding, method: Alamofire.Method) -> Bool {
         switch encoding {
         case .URLEncodedInURL:
             return true

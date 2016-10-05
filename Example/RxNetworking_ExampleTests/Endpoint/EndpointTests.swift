@@ -9,6 +9,7 @@
 import XCTest
 import RxSwift
 import RxNetworking
+import Alamofire
 
 class EndpointTests: XCTestCase {
     
@@ -87,9 +88,115 @@ class EndpointTests: XCTestCase {
     }
     
     func testFullUrl() {
-        XCTAssertEqual(endpoint1Snapshot.fullUrl(), "https://api.rx%20networking.sample/endpoint")
-        XCTAssertEqual(endpoint2Snapshot.fullUrl(), "https://api.rx%20networking.sample/endpoint/test")
-        XCTAssertEqual(endpoint3Snapshot.fullUrl(), "https://api.rx%20networking.sample/endpoint")
-        XCTAssertEqual(endpoint4Snapshot.fullUrl(), "https://api.rx%20networking.sample/endpoint")
+        XCTAssertEqual(endpoint1Snapshot.fullUrl(), "https://api.rx networking.sample/endpoint".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()))
+        XCTAssertEqual(endpoint2Snapshot.fullUrl(), "https://api.rx networking.sample/endpoint/test".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()))
+        XCTAssertEqual(endpoint3Snapshot.fullUrl(), "https://api.rx networking.sample/endpoint".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()))
+        XCTAssertEqual(endpoint4Snapshot.fullUrl(), "https://api.rx networking.sample/endpoint".stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()))
+    }
+    
+    func testParametersEncodedInUrl() {
+        let methods: [Alamofire.Method] = [.OPTIONS, .GET, .HEAD, .POST, .PUT, .PATCH, .DELETE, .TRACE, .CONNECT]
+        let encodings: [Alamofire.ParameterEncoding] = [.URL, .URLEncodedInURL, .JSON]
+        
+        methods.forEach { method in
+            XCTAssertTrue(EndpointSnapshot.parametersEncodedInURL(withEncoding: .URLEncodedInURL, method: method))
+        }
+        
+        encodings.forEach { encoding in
+            methods.forEach { method in
+                if encoding == .URLEncodedInURL {
+                    XCTAssertTrue(EndpointSnapshot.parametersEncodedInURL(withEncoding: encoding, method: method))
+                } else {
+                    switch method {
+                    case .GET, .HEAD, .DELETE:
+                        XCTAssertTrue(EndpointSnapshot.parametersEncodedInURL(withEncoding: encoding, method: method))
+                    default:
+                        XCTAssertFalse(EndpointSnapshot.parametersEncodedInURL(withEncoding: encoding, method: method))
+                    }
+                }
+            }
+        }
+    }
+    
+    func testGetBodyParameters() {
+        // Method: .GET => no body parameters
+        var bodyParameters = endpoint1Snapshot.getBodyParameters()
+        XCTAssertNil(bodyParameters)
+        
+        // Method: .POST => URL and JSON are body parameters
+        bodyParameters = endpoint2Snapshot.getBodyParameters()
+        XCTAssertNotNil(bodyParameters)
+        XCTAssertEqual(bodyParameters?.count, 11)
+        
+        // Method: .PUT => URL and JSON are body parameters
+        bodyParameters = endpoint3Snapshot.getBodyParameters()
+        XCTAssertNotNil(bodyParameters)
+        XCTAssertEqual(bodyParameters?.count, 11)
+        
+        // Method: .DELETE => no body parameters
+        bodyParameters = endpoint4Snapshot.getBodyParameters()
+        XCTAssertNil(bodyParameters)
+    }
+    
+    func testGetURLEncodedInUrlParameters() {
+        // Method: .GET => all parameters are url parameters
+        var bodyParameters = endpoint1Snapshot.getURLEncodedInURLParameters()
+        XCTAssertNotNil(bodyParameters)
+        XCTAssertEqual(bodyParameters?.count, 16)
+        
+        // Method: .POST => no url parameters
+        bodyParameters = endpoint2Snapshot.getURLEncodedInURLParameters()
+        XCTAssertNotNil(bodyParameters)
+        XCTAssertEqual(bodyParameters?.count, 5)
+        
+        // Method: .PUT => no url parameters
+        bodyParameters = endpoint3Snapshot.getURLEncodedInURLParameters()
+        XCTAssertNotNil(bodyParameters)
+        XCTAssertEqual(bodyParameters?.count, 5)
+        
+        // Method: .DELETE => all parameters are url parameters
+        bodyParameters = endpoint4Snapshot.getURLEncodedInURLParameters()
+        XCTAssertNotNil(bodyParameters)
+        XCTAssertEqual(bodyParameters?.count, 16)
+    }
+    
+    func testGetURLEncodedInBodyParameters() {
+        // Method: .GET => no url encoded in body params
+        var bodyParameters = endpoint1Snapshot.getURLEncodedInBodyParameters()
+        XCTAssertNil(bodyParameters)
+        
+        // Method: .POST => no url parameters
+        bodyParameters = endpoint2Snapshot.getURLEncodedInBodyParameters()
+        XCTAssertNotNil(bodyParameters)
+        XCTAssertEqual(bodyParameters?.count, 6)
+        
+        // Method: .PUT => no url parameters
+        bodyParameters = endpoint3Snapshot.getURLEncodedInBodyParameters()
+        XCTAssertNotNil(bodyParameters)
+        XCTAssertEqual(bodyParameters?.count, 6)
+        
+        // Method: .DELETE => no url encoded in body params
+        bodyParameters = endpoint4Snapshot.getURLEncodedInBodyParameters()
+        XCTAssertNil(bodyParameters)
+    }
+    
+    func testGetJSONEncodedInBodyParameters() {
+        // Method: .GET => no url encoded in body params
+        var bodyParameters = endpoint1Snapshot.getJSONEncodedInBodyParameters()
+        XCTAssertNil(bodyParameters)
+        
+        // Method: .POST => no url parameters
+        bodyParameters = endpoint2Snapshot.getJSONEncodedInBodyParameters()
+        XCTAssertNotNil(bodyParameters)
+        XCTAssertEqual(bodyParameters?.count, 5)
+        
+        // Method: .PUT => no url parameters
+        bodyParameters = endpoint3Snapshot.getJSONEncodedInBodyParameters()
+        XCTAssertNotNil(bodyParameters)
+        XCTAssertEqual(bodyParameters?.count, 5)
+        
+        // Method: .DELETE => no url encoded in body params
+        bodyParameters = endpoint4Snapshot.getJSONEncodedInBodyParameters()
+        XCTAssertNil(bodyParameters)
     }
 }
