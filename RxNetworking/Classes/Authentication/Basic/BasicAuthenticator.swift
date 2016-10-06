@@ -22,8 +22,8 @@ public final class BasicAuthenticator {
 // MARK: Authenticator
 
 extension BasicAuthenticator: Authenticator {
-    public func authHeaderField() -> Observable<String> {
-        return Observable.just(basicAuthHeaderField())
+    public func authorizationHeader() -> Observable<[String: String]> {
+        return Observable.just([K.Authenticator.kAuthHeaderKey: basicAuthHeaderField()])
     }
 }
 

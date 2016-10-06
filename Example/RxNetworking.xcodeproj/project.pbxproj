@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0BE814ED1DA55AF000CBEA25 /* EndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE814EB1DA55AF000CBEA25 /* EndpointTests.swift */; };
 		0BE814F01DA57C8100CBEA25 /* EndpointTestsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE814EF1DA57C8100CBEA25 /* EndpointTestsAPI.swift */; };
+		0BEF3FE41DA6E7E00022612A /* BasicAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEF3FE21DA6E7E00022612A /* BasicAuthTests.swift */; };
+		0BEF3FE51DA6E7E00022612A /* BasicAuthTestsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEF3FE31DA6E7E00022612A /* BasicAuthTestsAPI.swift */; };
 		44F0B1FA1EC28AEF9FD934F1 /* Pods_RxNetworking_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F8A9094D070A8BE89E1E446 /* Pods_RxNetworking_Example.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -35,6 +37,8 @@
 		0BE814E41DA55ABC00CBEA25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0BE814EB1DA55AF000CBEA25 /* EndpointTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndpointTests.swift; sourceTree = "<group>"; };
 		0BE814EF1DA57C8100CBEA25 /* EndpointTestsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndpointTestsAPI.swift; sourceTree = "<group>"; };
+		0BEF3FE21DA6E7E00022612A /* BasicAuthTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicAuthTests.swift; sourceTree = "<group>"; };
+		0BEF3FE31DA6E7E00022612A /* BasicAuthTestsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicAuthTestsAPI.swift; sourceTree = "<group>"; };
 		17ED255DE6955799B1551CDC /* Pods_RxNetworking_ExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxNetworking_ExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A2B96B424ABBF24FAEFF471 /* Pods_RxNetworking_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxNetworking_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		21FDACC98807F2C6E2A712B6 /* Pods-RxNetworking_ExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxNetworking_ExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RxNetworking_ExampleTests/Pods-RxNetworking_ExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -77,6 +81,7 @@
 		0BE814E11DA55ABC00CBEA25 /* RxNetworking_ExampleTests */ = {
 			isa = PBXGroup;
 			children = (
+				0BEF3FE11DA6E7E00022612A /* BasicAuthTests */,
 				0BE814EA1DA55AF000CBEA25 /* Endpoint */,
 				0BE814E41DA55ABC00CBEA25 /* Info.plist */,
 			);
@@ -90,6 +95,15 @@
 				0BE814EB1DA55AF000CBEA25 /* EndpointTests.swift */,
 			);
 			path = Endpoint;
+			sourceTree = "<group>";
+		};
+		0BEF3FE11DA6E7E00022612A /* BasicAuthTests */ = {
+			isa = PBXGroup;
+			children = (
+				0BEF3FE21DA6E7E00022612A /* BasicAuthTests.swift */,
+				0BEF3FE31DA6E7E00022612A /* BasicAuthTestsAPI.swift */,
+			);
+			path = BasicAuthTests;
 			sourceTree = "<group>";
 		};
 		13AC90CE2B8BEF916FE1A42B /* Pods */ = {
@@ -372,7 +386,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0BE814F01DA57C8100CBEA25 /* EndpointTestsAPI.swift in Sources */,
+				0BEF3FE41DA6E7E00022612A /* BasicAuthTests.swift in Sources */,
 				0BE814ED1DA55AF000CBEA25 /* EndpointTests.swift in Sources */,
+				0BEF3FE51DA6E7E00022612A /* BasicAuthTestsAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

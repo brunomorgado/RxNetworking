@@ -20,5 +20,5 @@ public enum AuthenticatorError: ErrorType {
 }
 
 public protocol Authenticator {
-    func authHeaderField() -> Observable<String>
+    func authorizationHeader() -> Observable<[String: String]>
 }

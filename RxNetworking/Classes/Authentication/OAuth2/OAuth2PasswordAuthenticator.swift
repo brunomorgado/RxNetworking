@@ -51,14 +51,28 @@ public final class OAuth2PasswordAuthenticator {
 // MARK: Authenticator protocol
 
 extension OAuth2PasswordAuthenticator: Authenticator {
-    public func authHeaderField() -> Observable<String> {
+    public func authorizationHeader() -> Observable<[String : String]> {
+        let headerKeyObservable = Observable.just(K.Authenticator.kAuthHeaderKey)
+        let headerValueObservable = authHeaderField()
+        return Observable.zip(headerKeyObservable, headerValueObservable) { ($0, $1) }
+            .map { (headerKey, headerValue) in
+                [headerKey: headerValue]
+            }
+    }
+}
+
+// MARK: Private
+
+private extension OAuth2PasswordAuthenticator {
+    
+    func authHeaderField() -> Observable<String> {
         var credentialSignal: Observable<OAuth2Credential>
         
         guard let _credential = getCredential() else {
             debugPrint("Authenticator \(self) was unable to authenticate with credential.")
             return Observable.just("")
         }
-
+        
         if !_credential.isExpired {
             credentialSignal = Observable.just(_credential)
         } else if let refreshToken = _credential.refreshToken {
@@ -73,11 +87,6 @@ extension OAuth2PasswordAuthenticator: Authenticator {
         return credentialSignal
             .map(toOAuth2HeaderField)
     }
-}
-
-// MARK: Private
-
-private extension OAuth2PasswordAuthenticator {
     
     func toOAuth2HeaderField(credential: OAuth2Credential) throws -> String {
         return "Bearer \(credential.accessToken)"

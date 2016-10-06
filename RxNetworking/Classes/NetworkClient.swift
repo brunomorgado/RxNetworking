@@ -41,7 +41,7 @@ public final class NetworkClient: NetworkClientProtocol {
             return Observable.just(sampleData)
         }
         
-        let endpointSnap = endpoint.snapshot()
+        let endpointSnapshot = endpoint.snapshot()
         let request: Observable<AnyObject>
         
         if let _authenticator = authenticator {
@@ -50,10 +50,8 @@ public final class NetworkClient: NetworkClientProtocol {
              Needs authentication
              */
             
-            request = _authenticator
-                .authHeaderField()
-                .map(toAuthorizationHeader)
-                .map{(endpointSnap, $0)}
+            request = _authenticator.authorizationHeader()
+                .map{(endpointSnapshot, $0)}
                 .flatMap(toAuthenticatedRequest)
             
         } else {
@@ -62,7 +60,7 @@ public final class NetworkClient: NetworkClientProtocol {
              No need for authentication
              */
             
-            request = genericRequest(withEndpoint: endpointSnap)
+            request = genericRequest(withEndpoint: endpointSnapshot)
         }
         
         return request
