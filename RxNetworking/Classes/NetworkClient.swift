@@ -81,7 +81,7 @@ private extension NetworkClient {
     
     func genericRequest(
         withEndpoint endpoint: EndpointSnapshot) -> Observable<AnyObject> {
-        return Observable.create { observer in
+        return Observable.create { [unowned self] observer in
             do {
                 let request = self.networkManager.request(try self.compositeRequest(withEndpoint: endpoint))
                     .validate(withValidation: endpoint.validation)
@@ -111,7 +111,7 @@ private extension NetworkClient {
             throw NetworkClientError.Unknown
         }
         
-        let compositeRequest = NSMutableURLRequest(URL: URL)
+        var compositeRequest = NSMutableURLRequest(URL: URL)
         compositeRequest.HTTPMethod = endpoint.method.rawValue
         
         if let headers = endpoint.headers {
@@ -124,7 +124,7 @@ private extension NetworkClient {
         let urlEncodedInBodyParameters = endpoint.getURLEncodedInBodyParameters()
         let jsonEncodedInBodyParameters = endpoint.getJSONEncodedInBodyParameters()
         
-        ParameterEncoding.URLEncodedInURL.encode(compositeRequest, parameters: urlEncodedInUrlParameters)
+        compositeRequest = ParameterEncoding.URLEncodedInURL.encode(compositeRequest, parameters: urlEncodedInUrlParameters).0
         
         guard let urlEncodedRequestCopy = compositeRequest.mutableCopy() as? NSMutableURLRequest else {
             throw NetworkClientError.Unknown
