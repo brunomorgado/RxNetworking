@@ -16,6 +16,7 @@ enum NetworkClientError: ErrorType {
 public protocol NetworkClientProtocol {
     init()
     init(withSessionConfiguration sessionConfiguration: NSURLSessionConfiguration)
+    init(withSessionManager sessionManager: Manager)
     
     func request(withEndpoint endpoint: Endpoint) -> Observable<AnyObject>
     func request(withEndpoint endpoint: Endpoint, authenticator: Authenticator?) -> Observable<AnyObject>
@@ -30,6 +31,10 @@ public final class NetworkClient: NetworkClientProtocol {
     
     public init(withSessionConfiguration sessionConfiguration: NSURLSessionConfiguration) {
         self.networkManager = Manager(configuration: sessionConfiguration)
+    }
+    
+    public init(withSessionManager sessionManager: Manager) {
+        self.networkManager = sessionManager
     }
     
     public func request(withEndpoint endpoint: Endpoint) -> Observable<AnyObject> {

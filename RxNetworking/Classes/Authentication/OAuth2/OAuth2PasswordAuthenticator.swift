@@ -12,7 +12,7 @@ import Alamofire
 public protocol OAuth2PasswordAuthenticatorDataSource {
     func clientId() -> String
     func clientSecret() -> String
-    func tokenEndpoint() -> Endpoint
+    func tokenEndpoint() throws -> Endpoint
     func tokenEndpoint(withRefreshToken refreshToken: String) -> Endpoint
 }
 
@@ -30,8 +30,8 @@ public final class OAuth2PasswordAuthenticator {
         self.authenticator = authenticator
     }
     
-    public func authorize() -> Observable<Bool> {
-        return networkClient.request(withEndpoint: dataSource!.tokenEndpoint(), authenticator: authenticator)
+    public func authorize() throws -> Observable<Bool> {
+        return networkClient.request(withEndpoint: try dataSource!.tokenEndpoint(), authenticator: authenticator)
             .map(toCredential)
             .doOnNext(storeCredential)
             .map { _ in true}
