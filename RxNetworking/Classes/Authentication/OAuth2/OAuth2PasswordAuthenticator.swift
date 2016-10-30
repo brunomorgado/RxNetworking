@@ -17,12 +17,27 @@ public protocol OAuth2PasswordAuthenticatorDataSource {
 }
 
 public final class OAuth2PasswordAuthenticator {
-    public var dataSource: OAuth2PasswordAuthenticatorDataSource?
+    
+    public var isAuthorizedSignal: Observable<Bool> {
+        return credentialVariable.asObservable()
+            .map({$0 != nil})
+    }
+    
+    public var isAuthorized: Bool {
+        return credentialVariable.value != nil
+    }
+    
+    public var dataSource: OAuth2PasswordAuthenticatorDataSource? {
+        didSet {
+            credentialVariable.value = getCredential()
+        }
+    }
     
     private let networkClient: NetworkClientProtocol
     private let authenticator: Authenticator?
     private var credentialStore: CredentialStore
     private let disposeBag = DisposeBag()
+    private var credentialVariable = Variable<Credential?>(nil)
     
     public init(withNetworkClient networkClient: NetworkClientProtocol, authenticator: Authenticator? = nil, credentialStore: CredentialStore = OAuth2DefaultsCredentialStore()) {
         self.networkClient = networkClient
@@ -39,12 +54,7 @@ public final class OAuth2PasswordAuthenticator {
     }
     
     public func unauthorize() throws {
-        try credentialStore.deleteCredential(withIdentifier: OAuth2Credential.identifierWithClientId(dataSource!.clientId(), clientSecret: dataSource!.clientSecret()))
-    }
-    
-    public func isAuthorized() -> Bool {
-        let credential = getCredential()
-        return credential != nil
+        try deleteCredential()
     }
 }
 
@@ -106,5 +116,13 @@ private extension OAuth2PasswordAuthenticator {
     
     func storeCredential(credential: OAuth2Credential) throws {
         try credentialStore.storeCredential(credential, withIdentifier: OAuth2Credential.identifierWithClientId(dataSource!.clientId(), clientSecret: dataSource!.clientSecret()))
+        
+        credentialVariable.value = credential
+    }
+    
+    func deleteCredential() throws {
+        try credentialStore.deleteCredential(withIdentifier: OAuth2Credential.identifierWithClientId(dataSource!.clientId(), clientSecret: dataSource!.clientSecret()))
+        
+        credentialVariable.value = nil
     }
 }
