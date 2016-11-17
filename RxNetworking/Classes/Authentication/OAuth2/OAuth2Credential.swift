@@ -51,16 +51,18 @@ public final class OAuth2Credential: NSObject, NSCoding, Credential {
             let tokenType = decoder.decodeObjectForKey(K.OAuth2Credential.kTokenTypeKey) as? String
             else { return nil }
         
-        let refreshToken = decoder.decodeObjectForKey(K.OAuth2Credential.kRefreshTokenKey) as? String
-        let expiration = decoder.decodeObjectForKey(K.OAuth2Credential.kExpirationKey) as? NSDate
-        
+        let refreshToken: String? = decoder.decodeObjectForKey(K.OAuth2Credential.kRefreshTokenKey) as? String ?? nil
+        let expiration: NSDate? = decoder.decodeObjectForKey(K.OAuth2Credential.kExpirationKey) as? NSDate ?? nil
+
         self.init(withAccessToken: accessToken, tokenType: tokenType, refreshToken: refreshToken, expiration: expiration ?? NSDate.distantFuture())
     }
     
     public func encodeWithCoder(coder: NSCoder) {
         coder.encodeObject(accessToken, forKey: K.OAuth2Credential.kAccessTokenKey)
         coder.encodeObject(tokenType, forKey: K.OAuth2Credential.kTokenTypeKey)
-        coder.encodeObject(refreshToken, forKey: K.OAuth2Credential.kRefreshTokenKey)
+        if let _refreshToken = refreshToken {
+            coder.encodeObject(_refreshToken, forKey: K.OAuth2Credential.kRefreshTokenKey)
+        }
         coder.encodeObject(expiration, forKey: K.OAuth2Credential.kExpirationKey)
     }
 }
