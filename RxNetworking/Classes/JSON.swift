@@ -19,7 +19,7 @@ public enum JSONWritingError: ErrorType {
 }
 
 public protocol JSONParsableType {
-    static func fromJSON(_: AnyObject?) throws -> Self
+    static func fromJSON(_: AnyObject?, refreshToken: String?) throws -> Self
 }
 
 protocol JSONWritableType {

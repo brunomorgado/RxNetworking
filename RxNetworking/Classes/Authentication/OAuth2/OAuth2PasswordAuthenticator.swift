@@ -103,7 +103,8 @@ private extension OAuth2PasswordAuthenticator {
     }
     
     func toCredential(json: AnyObject) throws -> OAuth2Credential {
-        return try OAuth2Credential.fromJSON(json)
+        let refreshToken = getCredential()?.refreshToken
+        return try OAuth2Credential.fromJSON(json, refreshToken: refreshToken)
     }
     
     func getCredential() -> OAuth2Credential? {
