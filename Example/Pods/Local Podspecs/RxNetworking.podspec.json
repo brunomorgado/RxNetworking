@@ -1,6 +1,6 @@
 {
   "name": "RxNetworking",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "summary": "RxNetworking",
   "homepage": "https://github.com/brunomorgado",
   "license": "MIT License",
@@ -9,7 +9,7 @@
   },
   "source": {
     "git": "https://github.com/brunomorgado/RxNetworking.git",
-    "tag": "0.1.0"
+    "tag": "1.0.0"
   },
   "platforms": {
     "ios": "8.0"
@@ -17,10 +17,10 @@
   "requires_arc": true,
   "dependencies": {
     "RxSwift": [
-
+      "~> 3.0"
     ],
     "Alamofire": [
-
+      "~> 4.0"
     ]
   },
   "source_files": "RxNetworking/Classes/**/*.swift",

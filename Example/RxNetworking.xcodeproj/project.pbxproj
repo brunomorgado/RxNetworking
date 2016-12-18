@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0BE814ED1DA55AF000CBEA25 /* EndpointTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE814EB1DA55AF000CBEA25 /* EndpointTests.swift */; };
-		0BE814F01DA57C8100CBEA25 /* EndpointTestsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE814EF1DA57C8100CBEA25 /* EndpointTestsAPI.swift */; };
-		0BEF3FE41DA6E7E00022612A /* BasicAuthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEF3FE21DA6E7E00022612A /* BasicAuthTests.swift */; };
-		0BEF3FE51DA6E7E00022612A /* BasicAuthTestsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEF3FE31DA6E7E00022612A /* BasicAuthTestsAPI.swift */; };
 		44F0B1FA1EC28AEF9FD934F1 /* Pods_RxNetworking_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F8A9094D070A8BE89E1E446 /* Pods_RxNetworking_Example.framework */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
@@ -35,10 +31,6 @@
 		0A20BE0C379C53F783201788 /* Pods-RxNetworking_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxNetworking_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RxNetworking_Example/Pods-RxNetworking_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		0BE814E01DA55ABC00CBEA25 /* RxNetworking_ExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RxNetworking_ExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BE814E41DA55ABC00CBEA25 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0BE814EB1DA55AF000CBEA25 /* EndpointTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndpointTests.swift; sourceTree = "<group>"; };
-		0BE814EF1DA57C8100CBEA25 /* EndpointTestsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndpointTestsAPI.swift; sourceTree = "<group>"; };
-		0BEF3FE21DA6E7E00022612A /* BasicAuthTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicAuthTests.swift; sourceTree = "<group>"; };
-		0BEF3FE31DA6E7E00022612A /* BasicAuthTestsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicAuthTestsAPI.swift; sourceTree = "<group>"; };
 		17ED255DE6955799B1551CDC /* Pods_RxNetworking_ExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxNetworking_ExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A2B96B424ABBF24FAEFF471 /* Pods_RxNetworking_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxNetworking_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		21FDACC98807F2C6E2A712B6 /* Pods-RxNetworking_ExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxNetworking_ExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RxNetworking_ExampleTests/Pods-RxNetworking_ExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -81,29 +73,9 @@
 		0BE814E11DA55ABC00CBEA25 /* RxNetworking_ExampleTests */ = {
 			isa = PBXGroup;
 			children = (
-				0BEF3FE11DA6E7E00022612A /* BasicAuthTests */,
-				0BE814EA1DA55AF000CBEA25 /* Endpoint */,
 				0BE814E41DA55ABC00CBEA25 /* Info.plist */,
 			);
 			path = RxNetworking_ExampleTests;
-			sourceTree = "<group>";
-		};
-		0BE814EA1DA55AF000CBEA25 /* Endpoint */ = {
-			isa = PBXGroup;
-			children = (
-				0BE814EF1DA57C8100CBEA25 /* EndpointTestsAPI.swift */,
-				0BE814EB1DA55AF000CBEA25 /* EndpointTests.swift */,
-			);
-			path = Endpoint;
-			sourceTree = "<group>";
-		};
-		0BEF3FE11DA6E7E00022612A /* BasicAuthTests */ = {
-			isa = PBXGroup;
-			children = (
-				0BEF3FE21DA6E7E00022612A /* BasicAuthTests.swift */,
-				0BEF3FE31DA6E7E00022612A /* BasicAuthTestsAPI.swift */,
-			);
-			path = BasicAuthTests;
 			sourceTree = "<group>";
 		};
 		13AC90CE2B8BEF916FE1A42B /* Pods */ = {
@@ -239,12 +211,13 @@
 					0BE814DF1DA55ABC00CBEA25 = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = E69C2X3WFE;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0820;
 					};
 				};
 			};
@@ -385,10 +358,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0BE814F01DA57C8100CBEA25 /* EndpointTestsAPI.swift in Sources */,
-				0BEF3FE41DA6E7E00022612A /* BasicAuthTests.swift in Sources */,
-				0BE814ED1DA55AF000CBEA25 /* EndpointTests.swift in Sources */,
-				0BEF3FE51DA6E7E00022612A /* BasicAuthTestsAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,7 +416,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kocomputer.RxNetworking-ExampleTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0.1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RxNetworking_Example.app/RxNetworking_Example";
 			};
 			name = Debug;
@@ -466,7 +435,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kocomputer.RxNetworking-ExampleTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0.1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RxNetworking_Example.app/RxNetworking_Example";
 			};
 			name = Release;
@@ -515,6 +484,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -554,6 +524,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 2.3;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -569,7 +540,7 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -584,7 +555,7 @@
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

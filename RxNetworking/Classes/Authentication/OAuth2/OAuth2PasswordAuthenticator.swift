@@ -33,11 +33,11 @@ public final class OAuth2PasswordAuthenticator {
         }
     }
     
-    private let networkClient: NetworkClientProtocol
-    private let authenticator: Authenticator?
-    private var credentialStore: CredentialStore
-    private let disposeBag = DisposeBag()
-    private var credentialVariable = Variable<Credential?>(nil)
+    fileprivate let networkClient: NetworkClientProtocol
+    fileprivate let authenticator: Authenticator?
+    fileprivate var credentialStore: CredentialStore
+    fileprivate let disposeBag = DisposeBag()
+    fileprivate var credentialVariable = Variable<Credential?>(nil)
     
     public init(withNetworkClient networkClient: NetworkClientProtocol, authenticator: Authenticator? = nil, credentialStore: CredentialStore = OAuth2DefaultsCredentialStore()) {
         self.networkClient = networkClient
@@ -48,7 +48,7 @@ public final class OAuth2PasswordAuthenticator {
     public func authorize() throws -> Observable<Bool> {
         return networkClient.request(withEndpoint: try dataSource!.tokenEndpoint(), authenticator: authenticator)
             .map(toCredential)
-            .doOnNext(storeCredential)
+            .do(onNext: storeCredential)
             .map { _ in true}
             .catchErrorJustReturn(false)
     }
@@ -88,7 +88,7 @@ private extension OAuth2PasswordAuthenticator {
         } else if let refreshToken = _credential.refreshToken {
             credentialSignal = networkClient.request(withEndpoint: dataSource!.tokenEndpoint(withRefreshToken: refreshToken), authenticator: authenticator)
                 .map(toCredential)
-                .doOnNext(storeCredential)
+                .do(onNext: storeCredential)
         } else {
             debugPrint("Authenticator \(self) was unable to authenticate with refresh token.")
             return Observable.just("")
@@ -98,11 +98,11 @@ private extension OAuth2PasswordAuthenticator {
             .map(toOAuth2HeaderField)
     }
     
-    func toOAuth2HeaderField(credential: OAuth2Credential) throws -> String {
+    func toOAuth2HeaderField(_ credential: OAuth2Credential) throws -> String {
         return "Bearer \(credential.accessToken)"
     }
     
-    func toCredential(json: AnyObject) throws -> OAuth2Credential {
+    func toCredential(_ json: AnyObject) throws -> OAuth2Credential {
         let refreshToken = getCredential()?.refreshToken
         return try OAuth2Credential.fromJSON(json, refreshToken: refreshToken)
     }
@@ -115,7 +115,7 @@ private extension OAuth2PasswordAuthenticator {
         return credential
     }
     
-    func storeCredential(credential: OAuth2Credential) throws {
+    func storeCredential(_ credential: OAuth2Credential) throws {
         try credentialStore.storeCredential(credential, withIdentifier: OAuth2Credential.identifierWithClientId(dataSource!.clientId(), clientSecret: dataSource!.clientSecret()))
         
         credentialVariable.value = credential

@@ -6,7 +6,7 @@
 //  Copyright © 2016 KO Computer. All rights reserved.
 //
 
-public func += (inout left: [String: AnyObject]?, right: [String: AnyObject]?) {
+public func += (left: inout [String: AnyObject]?, right: [String: AnyObject]?) {
     let _left = left ?? [String: AnyObject]()
     let _right = right ?? [String: AnyObject]()
     left = _left.reduce(_right) { t, e in
@@ -16,7 +16,7 @@ public func += (inout left: [String: AnyObject]?, right: [String: AnyObject]?) {
     }
 }
 
-public func += (inout left: [String: String]?, right: [String: String]?) {
+public func += (left: inout [String: String]?, right: [String: String]?) {
     let _left = left ?? [String: String]()
     let _right = right ?? [String: String]()
     left = _left.reduce(_right) { t, e in

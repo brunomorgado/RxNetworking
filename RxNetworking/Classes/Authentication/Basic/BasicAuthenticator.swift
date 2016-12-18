@@ -31,8 +31,8 @@ extension BasicAuthenticator: Authenticator {
 
 private extension BasicAuthenticator {
     func basicAuthHeaderField() -> String {
-        let credentialData = "\(username):\(password)".dataUsingEncoding(NSUTF8StringEncoding)!
-        let base64Credentials = credentialData.base64EncodedStringWithOptions([])
+        let credentialData = "\(username):\(password)".data(using: String.Encoding.utf8)!
+        let base64Credentials = credentialData.base64EncodedString(options: [])
         return "Basic \(base64Credentials)"
     }
 }

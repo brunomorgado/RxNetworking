@@ -8,14 +8,14 @@
 
 import Foundation
 
-public enum JSONParsingError: ErrorType {
-    case InvalidJSON
-    case FieldNotFound
-    case Unknown
+public enum JSONParsingError: Error {
+    case invalidJSON
+    case fieldNotFound
+    case unknown
 }
 
-public enum JSONWritingError: ErrorType {
-    case Unknown
+public enum JSONWritingError: Error {
+    case unknown
 }
 
 public protocol JSONParsableType {

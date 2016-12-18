@@ -9,32 +9,32 @@
 import Alamofire
 import RxSwift
 
-enum NetworkClientError: ErrorType {
-    case Unknown
+enum NetworkClientError: Error {
+    case unknown
 }
 
 public protocol NetworkClientProtocol {
     init()
-    init(withSessionConfiguration sessionConfiguration: NSURLSessionConfiguration)
-    init(withSessionManager sessionManager: Manager)
+    init(withSessionConfiguration sessionConfiguration: URLSessionConfiguration)
+    init(withSessionManager sessionManager: SessionManager)
     
     func request(withEndpoint endpoint: Endpoint) -> Observable<AnyObject>
     func request(withEndpoint endpoint: Endpoint, authenticator: Authenticator?) -> Observable<AnyObject>
 }
 
 public final class NetworkClient: NetworkClientProtocol {
-    private let networkManager: Manager
+    fileprivate let sessionManager: SessionManager
     
     public init() {
-        self.networkManager = Manager()
+        self.sessionManager = SessionManager()
     }
     
-    public init(withSessionConfiguration sessionConfiguration: NSURLSessionConfiguration) {
-        self.networkManager = Manager(configuration: sessionConfiguration)
+    public init(withSessionConfiguration sessionConfiguration: URLSessionConfiguration) {
+        self.sessionManager = SessionManager(configuration: sessionConfiguration)
     }
     
-    public init(withSessionManager sessionManager: Manager) {
-        self.networkManager = sessionManager
+    public init(withSessionManager sessionManager: SessionManager) {
+        self.sessionManager = sessionManager
     }
     
     public func request(withEndpoint endpoint: Endpoint) -> Observable<AnyObject> {
@@ -74,11 +74,11 @@ public final class NetworkClient: NetworkClientProtocol {
 
 private extension NetworkClient {
     
-    func toAuthorizationHeader(authField: String) -> [String: String] {
+    func toAuthorizationHeader(_ authField: String) -> [String: String] {
         return [K.Authenticator.kAuthHeaderKey: authField]
     }
     
-    func toAuthenticatedRequest(endpoint: EndpointSnapshot, authorizationHeader: [String: String]) -> Observable<AnyObject> {
+    func toAuthenticatedRequest(_ endpoint: EndpointSnapshot, authorizationHeader: [String: String]) -> Observable<AnyObject> {
         var authenticatedEndpoint = endpoint
         authenticatedEndpoint.headers += authorizationHeader
         return genericRequest(withEndpoint: authenticatedEndpoint)
@@ -87,86 +87,26 @@ private extension NetworkClient {
     func genericRequest(
         withEndpoint endpoint: EndpointSnapshot) -> Observable<AnyObject> {
         return Observable.create { [unowned self] observer in
-            do {
-                let request = self.networkManager.request(try self.compositeRequest(withEndpoint: endpoint))
-                    .validate(withValidation: endpoint.validation)
-                    .responseJSON(completionHandler: { response in
-                        switch response.result {
-                        case .Success:
-                            if let value = response.result.value {
-                                observer.onNext(value)
-                                observer.onCompleted()
-                            }
-                        case .Failure(let error):
-                            observer.onError(endpoint.errorMapping?(response) ?? error)
-                        }
-                    })
-                return AnonymousDisposable {
-                    request.cancel()
-                }
-            } catch let error {
-                observer.onError(error)
-                return NopDisposable.instance
-            }
+            let request = self.sessionManager.request(endpoint.fullUrl(), method: endpoint.method, parameters: endpoint.parameters, encoding: endpoint.encoding, headers: endpoint.headers)
+                .responseJSON(completionHandler: { response in
+                    switch response.result {
+                    case .success(let value):
+                        observer.onNext(value as AnyObject)
+                        observer.onCompleted()
+                    case .failure(let error):
+                        observer.onError(endpoint.errorMapping?(response) ?? error)
+                    }
+                })
+            return Disposables.create(with: { request.cancel() })
         }
-    }
-    
-    func compositeRequest(withEndpoint endpoint: EndpointSnapshot) throws -> NSURLRequest {
-        guard let URL = NSURL(string: endpoint.fullUrl()) else {
-            throw NetworkClientError.Unknown
-        }
-        
-        var compositeRequest = NSMutableURLRequest(URL: URL)
-        compositeRequest.HTTPMethod = endpoint.method.rawValue
-        
-        if let headers = endpoint.headers {
-            for (headerField, headerValue) in headers {
-                compositeRequest.setValue(headerValue, forHTTPHeaderField: headerField)
-            }
-        }
-        
-        let urlEncodedInUrlParameters = endpoint.getURLEncodedInURLParameters()
-        let urlEncodedInBodyParameters = endpoint.getURLEncodedInBodyParameters()
-        let jsonEncodedInBodyParameters = endpoint.getJSONEncodedInBodyParameters()
-        
-        compositeRequest = ParameterEncoding.URLEncodedInURL.encode(compositeRequest, parameters: urlEncodedInUrlParameters).0
-        
-        guard let urlEncodedRequestCopy = compositeRequest.mutableCopy() as? NSMutableURLRequest else {
-            throw NetworkClientError.Unknown
-        }
-        guard let jsonEncodedRequestCopy = compositeRequest.mutableCopy() as? NSMutableURLRequest else {
-            throw NetworkClientError.Unknown
-        }
-        
-        let urlEncodedInBodyRequest = ParameterEncoding.URL.encode(urlEncodedRequestCopy, parameters: urlEncodedInBodyParameters)
-        let jsonEncodedInBodyRequest = ParameterEncoding.JSON.encode(jsonEncodedRequestCopy, parameters: jsonEncodedInBodyParameters)
-        
-        var compositeHTTPBody: NSMutableData?
-        if let urlEncodedHTTPBody = urlEncodedInBodyRequest.0.HTTPBody {
-            compositeHTTPBody = NSMutableData(data: urlEncodedHTTPBody)
-            
-            if let jsonEncodedHTTPBody = jsonEncodedInBodyRequest.0.HTTPBody {
-                compositeHTTPBody?.appendData(jsonEncodedHTTPBody)
-            }
-        } else if let jsonEncodedHTTPBody = jsonEncodedInBodyRequest.0.HTTPBody {
-            compositeHTTPBody = NSMutableData(data: jsonEncodedHTTPBody)
-            
-            if let urlEncodedHTTPBody = urlEncodedInBodyRequest.0.HTTPBody {
-                compositeHTTPBody?.appendData(urlEncodedHTTPBody)
-            }
-        }
-        
-        compositeRequest.HTTPBody = compositeHTTPBody
-        
-        return compositeRequest
     }
 }
-
-extension Request {
-    func validate(withValidation validation: Validation?) -> Self {
-        guard let _validation = validation else {
-            return validate()
-        }
-        return validate(_validation)
-    }
-}
+//
+//extension Request {
+//    func validate(withValidation validation: Validation?) -> Self {
+//        guard let _validation = validation else {
+//            return validate()
+//        }
+//        return validate(_validation)
+//    }
+//}

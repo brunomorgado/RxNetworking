@@ -24,10 +24,10 @@ public final class OAuth2Credential: NSObject, NSCoding, Credential {
     let accessToken: String
     let tokenType: String
     var refreshToken: String?
-    var expiration: NSDate
+    var expiration: Date
     var isExpired: Bool {
         get {
-            return expiration.compare(NSDate()) == NSComparisonResult.OrderedAscending
+            return expiration.compare(Date()) == ComparisonResult.orderedAscending
         }
     }
     var readableDescription: String {
@@ -36,7 +36,7 @@ public final class OAuth2Credential: NSObject, NSCoding, Credential {
         }
     }
     
-    public init(withAccessToken accessToken: String, tokenType: String, refreshToken: String? = nil, expiration: NSDate = NSDate.distantFuture()) {
+    public init(withAccessToken accessToken: String, tokenType: String, refreshToken: String? = nil, expiration: Date = Date.distantFuture) {
         self.accessToken = accessToken
         self.tokenType = tokenType
         self.refreshToken = refreshToken
@@ -47,23 +47,23 @@ public final class OAuth2Credential: NSObject, NSCoding, Credential {
     
     public required convenience init?(coder decoder: NSCoder) {
         guard
-            let accessToken = decoder.decodeObjectForKey(K.OAuth2Credential.kAccessTokenKey) as? String,
-            let tokenType = decoder.decodeObjectForKey(K.OAuth2Credential.kTokenTypeKey) as? String
+            let accessToken = decoder.decodeObject(forKey: K.OAuth2Credential.kAccessTokenKey) as? String,
+            let tokenType = decoder.decodeObject(forKey: K.OAuth2Credential.kTokenTypeKey) as? String
             else { return nil }
         
-        let refreshToken: String? = decoder.decodeObjectForKey(K.OAuth2Credential.kRefreshTokenKey) as? String ?? nil
-        let expiration: NSDate? = decoder.decodeObjectForKey(K.OAuth2Credential.kExpirationKey) as? NSDate ?? nil
+        let refreshToken: String? = decoder.decodeObject(forKey: K.OAuth2Credential.kRefreshTokenKey) as? String ?? nil
+        let expiration: Date? = decoder.decodeObject(forKey: K.OAuth2Credential.kExpirationKey) as? Date ?? nil
 
-        self.init(withAccessToken: accessToken, tokenType: tokenType, refreshToken: refreshToken, expiration: expiration ?? NSDate.distantFuture())
+        self.init(withAccessToken: accessToken, tokenType: tokenType, refreshToken: refreshToken, expiration: expiration ?? Date.distantFuture)
     }
     
-    public func encodeWithCoder(coder: NSCoder) {
-        coder.encodeObject(accessToken, forKey: K.OAuth2Credential.kAccessTokenKey)
-        coder.encodeObject(tokenType, forKey: K.OAuth2Credential.kTokenTypeKey)
+    public func encode(with coder: NSCoder) {
+        coder.encode(accessToken, forKey: K.OAuth2Credential.kAccessTokenKey)
+        coder.encode(tokenType, forKey: K.OAuth2Credential.kTokenTypeKey)
         if let _refreshToken = refreshToken {
-            coder.encodeObject(_refreshToken, forKey: K.OAuth2Credential.kRefreshTokenKey)
+            coder.encode(_refreshToken, forKey: K.OAuth2Credential.kRefreshTokenKey)
         }
-        coder.encodeObject(expiration, forKey: K.OAuth2Credential.kExpirationKey)
+        coder.encode(expiration, forKey: K.OAuth2Credential.kExpirationKey)
     }
 }
 
@@ -71,20 +71,20 @@ public final class OAuth2Credential: NSObject, NSCoding, Credential {
 
 extension OAuth2Credential: JSONParsableType {
     
-    public static func fromJSON(json: AnyObject?, refreshToken: String?) throws -> OAuth2Credential {
-        guard let _json = json as? [String: AnyObject] else { throw JSONParsingError.InvalidJSON }
+    public static func fromJSON(_ json: AnyObject?, refreshToken: String?) throws -> OAuth2Credential {
+        guard let _json = json as? [String: AnyObject] else { throw JSONParsingError.invalidJSON }
         
-        guard let accessToken = _json[K.OAuth2Credential.kAccessTokenKey] as? String else { throw JSONParsingError.FieldNotFound }
-        guard let tokenType = _json[K.OAuth2Credential.kTokenTypeKey] as? String else { throw JSONParsingError.FieldNotFound }
+        guard let accessToken = _json[K.OAuth2Credential.kAccessTokenKey] as? String else { throw JSONParsingError.fieldNotFound }
+        guard let tokenType = _json[K.OAuth2Credential.kTokenTypeKey] as? String else { throw JSONParsingError.fieldNotFound }
         
         let credential = OAuth2Credential(withAccessToken: accessToken, tokenType: tokenType)
         
         credential.refreshToken = _json[K.OAuth2Credential.kRefreshTokenKey] as? String ?? refreshToken
         
         if let expiresIn = _json[K.OAuth2Credential.kExpirationKey] as? Double {
-            credential.expiration = NSDate(timeIntervalSinceNow: expiresIn)
+            credential.expiration = Date(timeIntervalSinceNow: expiresIn)
         } else {
-            credential.expiration = NSDate.distantFuture()
+            credential.expiration = Date.distantFuture
         }
         
         return credential
@@ -95,7 +95,7 @@ extension OAuth2Credential: JSONParsableType {
 
 extension OAuth2Credential {
     
-    public class func identifierWithClientId(clientId: String, clientSecret: String) -> String {
+    public class func identifierWithClientId(_ clientId: String, clientSecret: String) -> String {
         return "\(clientId):\(clientSecret)"
     }
 }

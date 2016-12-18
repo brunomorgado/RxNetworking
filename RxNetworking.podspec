@@ -8,8 +8,8 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/brunomorgado/RxNetworking.git", :tag => s.version.to_s }
   s.platform     = :ios, '8.0'
   s.requires_arc = true
-  s.dependency 'RxSwift'
-  s.dependency 'Alamofire'
+  s.dependency 'RxSwift', "~> 3.0"
+  s.dependency 'Alamofire', "~> 4.0"
   s.source_files = 'RxNetworking/Classes/**/*.swift'
   s.resource_bundles = {
     'RxNetworking' => ['RxNetworking/Assets/*.png']

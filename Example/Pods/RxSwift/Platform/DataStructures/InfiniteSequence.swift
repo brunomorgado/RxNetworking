@@ -1,6 +1,6 @@
 //
 //  InfiniteSequence.swift
-//  RxSwift
+//  Platform
 //
 //  Created by Krunoslav Zaher on 6/13/15.
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
@@ -8,12 +8,10 @@
 
 import Foundation
 
-/**
-Sequence that repeats `repeatedValue` infinite number of times.
-*/
-struct InfiniteSequence<E> : SequenceType {
+/// Sequence that repeats `repeatedValue` infinite number of times.
+struct InfiniteSequence<E> : Sequence {
     typealias Element = E
-    typealias Generator = AnyGenerator<E>
+    typealias Iterator = AnyIterator<E>
     
     private let _repeatedValue: E
     
@@ -21,9 +19,9 @@ struct InfiniteSequence<E> : SequenceType {
         _repeatedValue = repeatedValue
     }
     
-    func generate() -> Generator {
+    func makeIterator() -> Iterator {
         let repeatedValue = _repeatedValue
-        return AnyGenerator {
+        return AnyIterator {
             return repeatedValue
         }
     }

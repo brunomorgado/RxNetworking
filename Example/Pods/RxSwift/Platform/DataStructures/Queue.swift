@@ -1,6 +1,6 @@
 //
 //  Queue.swift
-//  Rx
+//  Platform
 //
 //  Created by Krunoslav Zaher on 3/21/15.
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
@@ -16,28 +16,26 @@ averaged over N operations.
 
 Complexity of `peek` is O(1).
 */
-public struct Queue<T>: SequenceType {
-    /**
-    Type of generator.
-    */
-    public typealias Generator = AnyGenerator<T>
-    
+struct Queue<T>: Sequence {
+    /// Type of generator.
+    typealias Generator = AnyIterator<T>
+
     private let _resizeFactor = 2
     
     private var _storage: ContiguousArray<T?>
     private var _count = 0
     private var _pushNextIndex = 0
-    private var _initialCapacity: Int
+    private let _initialCapacity: Int
 
     /**
     Creates new queue.
     
     - parameter capacity: Capacity of newly created queue.
     */
-    public init(capacity: Int) {
+    init(capacity: Int) {
         _initialCapacity = capacity
 
-        _storage = ContiguousArray<T?>(count: capacity, repeatedValue: nil)
+        _storage = ContiguousArray<T?>(repeating: nil, count: capacity)
     }
     
     private var dequeueIndex: Int {
@@ -45,31 +43,25 @@ public struct Queue<T>: SequenceType {
         return index < 0 ? index + _storage.count : index
     }
     
-    /**
-    - returns: Is queue empty.
-    */
-    public var isEmpty: Bool {
+    /// - returns: Is queue empty.
+    var isEmpty: Bool {
         return count == 0
     }
     
-    /**
-    - returns: Number of elements inside queue.
-    */
-    public var count: Int {
+    /// - returns: Number of elements inside queue.
+    var count: Int {
         return _count
     }
     
-    /**
-    - returns: Element in front of a list of elements to `dequeue`.
-    */
-    public func peek() -> T {
+    /// - returns: Element in front of a list of elements to `dequeue`.
+    func peek() -> T {
         precondition(count > 0)
         
         return _storage[dequeueIndex]!
     }
     
-    mutating private func resizeTo(size: Int) {
-        var newStorage = ContiguousArray<T?>(count: size, repeatedValue: nil)
+    mutating private func resizeTo(_ size: Int) {
+        var newStorage = ContiguousArray<T?>(repeating: nil, count: size)
         
         let count = _count
         
@@ -77,7 +69,7 @@ public struct Queue<T>: SequenceType {
         let spaceToEndOfQueue = _storage.count - dequeueIndex
         
         // first batch is from dequeue index to end of array
-        let countElementsInFirstBatch = min(count, spaceToEndOfQueue)
+        let countElementsInFirstBatch = Swift.min(count, spaceToEndOfQueue)
         // second batch is wrapped from start of array to end of queue
         let numberOfElementsInSecondBatch = count - countElementsInFirstBatch
         
@@ -89,14 +81,12 @@ public struct Queue<T>: SequenceType {
         _storage = newStorage
     }
     
-    /**
-    Enqueues `element`.
-    
-    - parameter element: Element to enqueue.
-    */
-    public mutating func enqueue(element: T) {
+    /// Enqueues `element`.
+    ///
+    /// - parameter element: Element to enqueue.
+    mutating func enqueue(_ element: T) {
         if count == _storage.count {
-            resizeTo(max(_storage.count, 1) * _resizeFactor)
+            resizeTo(Swift.max(_storage.count, 1) * _resizeFactor)
         }
         
         _storage[_pushNextIndex] = element
@@ -121,12 +111,10 @@ public struct Queue<T>: SequenceType {
         return _storage[index]!
     }
 
-    /**
-    Dequeues element or throws an exception in case queue is empty.
-    
-    - returns: Dequeued element.
-    */
-    public mutating func dequeue() -> T? {
+    /// Dequeues element or throws an exception in case queue is empty.
+    ///
+    /// - returns: Dequeued element.
+    mutating func dequeue() -> T? {
         if self.count == 0 {
             return nil
         }
@@ -141,14 +129,12 @@ public struct Queue<T>: SequenceType {
         return dequeueElementOnly()
     }
     
-    /**
-    - returns: Generator of contained elements.
-    */
-    public func generate() -> Generator {
+    /// - returns: Generator of contained elements.
+    func makeIterator() -> AnyIterator<T> {
         var i = dequeueIndex
         var count = _count
 
-        return AnyGenerator {
+        return AnyIterator {
             if count == 0 {
                 return nil
             }

@@ -1,9 +1,9 @@
 PODS:
-  - Alamofire (3.5.0)
-  - RxNetworking (0.1.0):
-    - Alamofire
-    - RxSwift
-  - RxSwift (2.6.0)
+  - Alamofire (4.2.0)
+  - RxNetworking (1.0.0):
+    - Alamofire (~> 4.0)
+    - RxSwift (~> 3.0)
+  - RxSwift (3.0.1)
 
 DEPENDENCIES:
   - RxNetworking (from `../`)
@@ -13,10 +13,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Alamofire: b70a7352335f8ea5babd0a923eb7e8eacc67b877
-  RxNetworking: 77903176ef5e1948d2df89d86ea14335bd475f58
-  RxSwift: 77f3a0b15324baa7a1c9bfa9f199648a82424e26
+  Alamofire: aa2e09d871c9160ac53c90e83c68064a94e3dfbe
+  RxNetworking: 76570529e70129d125d367f309e7e01e21251e6d
+  RxSwift: af5680055c4ad04480189c52d28385b1029493a6
 
-PODFILE CHECKSUM: a9cdd8d88163dfb575b62c93bf65ea33b270534c
+PODFILE CHECKSUM: 51accb2211d936152bcbd588a574c9f707661d71
 
 COCOAPODS: 1.0.1

@@ -15,8 +15,8 @@ extension K {
     }
 }
 
-public enum AuthenticatorError: ErrorType {
-    case Unknown
+public enum AuthenticatorError: Error {
+    case unknown
 }
 
 public protocol Authenticator {
