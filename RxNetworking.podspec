@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "RxNetworking"
-  s.version          = "2.0.0"
+  s.version          = "2.0.2"
   s.summary          = "RxNetworking"
   s.homepage         = "https://github.com/brunomorgado"
   s.license          = 'MIT License'
