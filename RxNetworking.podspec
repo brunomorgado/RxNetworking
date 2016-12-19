@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.license          = 'MIT License'
   s.author           = { "bfcmorgado" => "brunofcmorgado@gmail.com" }
   s.source           = { :git => "https://github.com/brunomorgado/RxNetworking.git", :tag => s.version.to_s }
-  s.platform     = :ios, '8.0'
+  s.platform     = :ios, '9.0'
   s.requires_arc = true
   s.dependency 'RxSwift', "~> 3.0"
   s.dependency 'Alamofire', "~> 4.0"
