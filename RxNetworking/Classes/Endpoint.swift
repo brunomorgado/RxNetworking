@@ -17,6 +17,7 @@ public protocol Endpoint {
     var encoding: ParameterEncoding { get }
     var method: HTTPMethod { get }
     var headers: HTTPHeaders? { get }
+    var validation: DataRequest.Validation? { get }
     var errorMapping: ErrorMapping? { get }
     var sampleData: AnyObject? { get }
 }
@@ -30,6 +31,7 @@ public extension Endpoint {
             encoding: self.encoding,
             method: self.method,
             headers: self.headers,
+            validation: self.validation,
             errorMapping: self.errorMapping,
             sampleData: self.sampleData)
     }
@@ -42,6 +44,7 @@ public struct EndpointSnapshot: Endpoint {
     public var encoding: ParameterEncoding
     public var method: HTTPMethod
     public var headers: HTTPHeaders?
+    public var validation: DataRequest.Validation?
     public var errorMapping: ErrorMapping?
     public var sampleData: AnyObject?
 }

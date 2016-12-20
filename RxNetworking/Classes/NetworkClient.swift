@@ -88,6 +88,7 @@ private extension NetworkClient {
         withEndpoint endpoint: EndpointSnapshot) -> Observable<AnyObject> {
         return Observable.create { [unowned self] observer in
             let request = self.sessionManager.request(endpoint.fullUrl(), method: endpoint.method, parameters: endpoint.parameters, encoding: endpoint.encoding, headers: endpoint.headers)
+                .validate(withValidation: endpoint.validation)
                 .responseJSON(completionHandler: { response in
                     switch response.result {
                     case .success(let value):
@@ -101,12 +102,12 @@ private extension NetworkClient {
         }
     }
 }
-//
-//extension Request {
-//    func validate(withValidation validation: Validation?) -> Self {
-//        guard let _validation = validation else {
-//            return validate()
-//        }
-//        return validate(_validation)
-//    }
-//}
+
+extension DataRequest {
+    func validate(withValidation validation: Validation?) -> Self {
+        guard let _validation = validation else {
+            return validate()
+        }
+        return validate(_validation)
+    }
+}
