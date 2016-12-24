@@ -6,9 +6,9 @@
 //  Copyright © 2016 KO Computer. All rights reserved.
 //
 
-public func += (left: inout [String: AnyObject]?, right: [String: AnyObject]?) {
-    let _left = left ?? [String: AnyObject]()
-    let _right = right ?? [String: AnyObject]()
+public func += (left: inout [String: Any]?, right: [String: Any]?) {
+    let _left = left ?? [String: Any]()
+    let _right = right ?? [String: Any]()
     left = _left.reduce(_right) { t, e in
         var t = t
         t[e.0] = e.1

@@ -18,8 +18,8 @@ public protocol NetworkClientProtocol {
     init(withSessionConfiguration sessionConfiguration: URLSessionConfiguration)
     init(withSessionManager sessionManager: SessionManager)
     
-    func request(withEndpoint endpoint: Endpoint) -> Observable<AnyObject>
-    func request(withEndpoint endpoint: Endpoint, authenticator: Authenticator?) -> Observable<AnyObject>
+    func request(withEndpoint endpoint: Endpoint) -> Observable<Any>
+    func request(withEndpoint endpoint: Endpoint, authenticator: Authenticator?) -> Observable<Any>
 }
 
 public final class NetworkClient: NetworkClientProtocol {
@@ -37,17 +37,17 @@ public final class NetworkClient: NetworkClientProtocol {
         self.sessionManager = sessionManager
     }
     
-    public func request(withEndpoint endpoint: Endpoint) -> Observable<AnyObject> {
+    public func request(withEndpoint endpoint: Endpoint) -> Observable<Any> {
         return request(withEndpoint: endpoint, authenticator: nil)
     }
     
-    public func request(withEndpoint endpoint: Endpoint, authenticator: Authenticator?) -> Observable<AnyObject> {
+    public func request(withEndpoint endpoint: Endpoint, authenticator: Authenticator?) -> Observable<Any> {
         if let sampleData = endpoint.sampleData {
             return Observable.just(sampleData)
         }
         
         let endpointSnapshot = endpoint.snapshot()
-        let request: Observable<AnyObject>
+        let request: Observable<Any>
         
         if let _authenticator = authenticator {
             
@@ -78,21 +78,21 @@ private extension NetworkClient {
         return [K.Authenticator.kAuthHeaderKey: authField]
     }
     
-    func toAuthenticatedRequest(_ endpoint: EndpointSnapshot, authorizationHeader: [String: String]) -> Observable<AnyObject> {
+    func toAuthenticatedRequest(_ endpoint: EndpointSnapshot, authorizationHeader: [String: String]) -> Observable<Any> {
         var authenticatedEndpoint = endpoint
         authenticatedEndpoint.headers += authorizationHeader
         return genericRequest(withEndpoint: authenticatedEndpoint)
     }
     
     func genericRequest(
-        withEndpoint endpoint: EndpointSnapshot) -> Observable<AnyObject> {
+        withEndpoint endpoint: EndpointSnapshot) -> Observable<Any> {
         return Observable.create { [unowned self] observer in
             let request = self.sessionManager.request(endpoint.fullUrl(), method: endpoint.method, parameters: endpoint.parameters, encoding: endpoint.encoding, headers: endpoint.headers)
                 .validate(withValidation: endpoint.validation)
                 .responseJSON(completionHandler: { response in
                     switch response.result {
                     case .success(let value):
-                        observer.onNext(value as AnyObject)
+                        observer.onNext(value)
                         observer.onCompleted()
                     case .failure(let error):
                         observer.onError(endpoint.errorMapping?(response) ?? error)

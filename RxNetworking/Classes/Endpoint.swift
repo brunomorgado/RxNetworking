@@ -19,7 +19,7 @@ public protocol Endpoint {
     var headers: HTTPHeaders? { get }
     var validation: DataRequest.Validation? { get }
     var errorMapping: ErrorMapping? { get }
-    var sampleData: AnyObject? { get }
+    var sampleData: Any? { get }
 }
 
 public extension Endpoint {
@@ -46,7 +46,7 @@ public struct EndpointSnapshot: Endpoint {
     public var headers: HTTPHeaders?
     public var validation: DataRequest.Validation?
     public var errorMapping: ErrorMapping?
-    public var sampleData: AnyObject?
+    public var sampleData: Any?
 }
 
 public extension EndpointSnapshot {

@@ -19,9 +19,9 @@ public enum JSONWritingError: Error {
 }
 
 public protocol JSONParsableType {
-    static func fromJSON(_: AnyObject?, refreshToken: String?) throws -> Self
+    static func fromJSON(_: Any?, refreshToken: String?) throws -> Self
 }
 
 protocol JSONWritableType {
-    static func toJSON(_: Self) throws -> AnyObject?
+    static func toJSON(_: Self) throws -> Any?
 }

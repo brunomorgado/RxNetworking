@@ -71,8 +71,8 @@ public final class OAuth2Credential: NSObject, NSCoding, Credential {
 
 extension OAuth2Credential: JSONParsableType {
     
-    public static func fromJSON(_ json: AnyObject?, refreshToken: String?) throws -> OAuth2Credential {
-        guard let _json = json as? [String: AnyObject] else { throw JSONParsingError.invalidJSON }
+    public static func fromJSON(_ json: Any?, refreshToken: String?) throws -> OAuth2Credential {
+        guard let _json = json as? [String: Any] else { throw JSONParsingError.invalidJSON }
         
         guard let accessToken = _json[K.OAuth2Credential.kAccessTokenKey] as? String else { throw JSONParsingError.fieldNotFound }
         guard let tokenType = _json[K.OAuth2Credential.kTokenTypeKey] as? String else { throw JSONParsingError.fieldNotFound }
